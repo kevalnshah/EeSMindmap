@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "EeSMindmap"
+    }
+  },
+  "defaultProject": "EeSMindmap",
+  "cli": {
+    "analytics": false
+  }
 }
