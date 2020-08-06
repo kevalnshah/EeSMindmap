@@ -1,0 +1,24 @@
+li {
+	float: left;
+	list-style-type: none;
+	padding: 5px;
+}
+
+div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	top: 100%;
+}
+
+.node {
+	position: relative;
+	text-align: center;
+	color: black;
+	background-color: chartreuse;
+	border-radius: 50%;
+	align-items: center;
+	font-size: larger;
+	cursor: pointer;
+}
