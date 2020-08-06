@@ -33,8 +33,12 @@
 </ng-template>
 
 <div class="legend">
-	<p>Single Click: SEE MINDMAP</p>
-	<p>Double Click: ADD NODE</p>
-	<p>Right Click: DELETE NODE CHILDREN</p>
+	<p>Single Click: SEE MINDMAP OF SELECTED NODE</p>
+	<p>Double Click: ADD NEW CHILD NODE</p>
+	<p>Right Click: DELETE ALL CHILDREN OF SELECTED NODE</p>
 	<p>Escape: VIEW ORIGINAL TREE</p>
+	<p>Click 'root': TOGGLE JSON OBJECT</p>
+</div>
+<div class="json" [style.display]='showJSON'>
+	{{ tree | json }}
 </div>

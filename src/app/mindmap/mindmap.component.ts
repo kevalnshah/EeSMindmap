@@ -12,6 +12,7 @@ export class MindmapComponent {
 	newNode = '';
 	parentNode: any = {};
 	origTree = {};
+	showJSON = 'none';
 	isSelected = false;
 	tree: any = [
 		{
@@ -39,7 +40,7 @@ export class MindmapComponent {
 	mindmap(node) {
 		this.isDoubleClick = false;
 		setTimeout(() => {
-			if (!this.isDoubleClick) {
+			if (!this.isDoubleClick && node.name !== 'root') {
 				this.parentNode = {};
 				this.getParent(this.tree[0], node.name);
 				if (this.isDragged) this.isDragged = !this.isDragged;
@@ -50,6 +51,8 @@ export class MindmapComponent {
 					this.tree = Array(this.parentNode);
 					this.isSelected = true;
 				}
+			} else {
+				this.showJSON = this.showJSON == 'none' ? 'flex' : 'none';
 			}
 		}, 300);
 	}
@@ -73,7 +76,7 @@ export class MindmapComponent {
 	deleteNode(data) {
 		const element = document.getElementById(data.name);
 		element.style.transform = 'rotate3d(2, -1, -1, 10turn)';
-		setTimeout(() => element.style.transform = '', 500);
+		setTimeout(() => (element.style.transform = ''), 500);
 		setTimeout(() => (data.nodes = []), 500);
 		return false;
 	}
