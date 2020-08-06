@@ -4,7 +4,7 @@
 	<div *ngFor="let node of list" cdkDrag (cdkDragStarted)="isDragged = true">
 		<div class="pos">
 			<svg
-			[id]='node.name'
+				[id]="node.name"
 				class="node"
 				height="100"
 				width="100"
