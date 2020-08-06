@@ -1,32 +1,40 @@
-<div>
-	<ng-container *ngTemplateOutlet="nod; context: { list: tree }"></ng-container>
-</div>
+<ng-container *ngTemplateOutlet="nod; context: { list: tree }"></ng-container>
 
 <ng-template #nod let-list="list">
-	<li *ngFor="let node of list" cdkDrag (cdkDragStarted)="isDragged = true">
-		<svg
-			class="node"
-			height="100"
-			width="100"
-			(click)="mindmap(node)"
-			(dblclick)="addNode(node)"
-			(contextmenu)="deleteNode(node)"
-		>
-			<circle cx="50" cy="50" r="50" stroke="black" stroke-width="1" fill="red" />
-			<text
-				x="50%"
-				dominant-baseline="middle"
-				y="50%"
-				text-anchor="middle"
-				fill="black"
+	<div *ngFor="let node of list" cdkDrag (cdkDragStarted)="isDragged = true">
+		<div class="pos">
+			<svg
+			[id]='node.name'
+				class="node"
+				height="100"
+				width="100"
+				(click)="mindmap(node)"
+				(dblclick)="addNode(node)"
+				(contextmenu)="deleteNode(node)"
 			>
-				{{ node.name }}
-			</text>
-		</svg>
-		<div>
+				<circle cx="50" cy="50" r="50" stroke="black" stroke-width="1" fill="red" />
+				<text
+					x="50%"
+					dominant-baseline="middle"
+					y="50%"
+					text-anchor="middle"
+					fill="black"
+				>
+					{{ node.name }}
+				</text>
+			</svg>
+		</div>
+		<div class="child">
 			<ng-container
 				*ngTemplateOutlet="nod; context: { list: node.nodes }"
 			></ng-container>
 		</div>
-	</li>
+	</div>
 </ng-template>
+
+<div class="legend">
+	<p>Single Click: SEE MINDMAP</p>
+	<p>Double Click: ADD NODE</p>
+	<p>Right Click: DELETE NODE CHILDREN</p>
+	<p>Escape: VIEW ORIGINAL TREE</p>
+</div>

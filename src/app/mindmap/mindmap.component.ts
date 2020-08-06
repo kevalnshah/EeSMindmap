@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
 	selector: 'mindmap',
@@ -10,14 +10,26 @@ export class MindmapComponent {
 	isDragged = false;
 	isDoubleClick = false;
 	newNode = '';
-	parentNode = {};
-
-	tree = [
+	parentNode: any = {};
+	origTree = {};
+	isSelected = false;
+	tree: any = [
 		{
 			name: 'root',
 			nodes: [
-				{ name: 'k', nodes: [] },
-				{ name: 'l', nodes: [{ name: 'm', nodes: [] }] },
+				{
+					name: 'a',
+					nodes: [
+						{
+							name: 'b',
+							nodes: [
+								{ name: 'c', nodes: [] },
+								{ name: 'd', nodes: [{ name: 'f', nodes: [] }] },
+							],
+						},
+						{ name: 'e', nodes: [] },
+					],
+				},
 			],
 		},
 	]; // initializing mindmap
@@ -28,7 +40,16 @@ export class MindmapComponent {
 		this.isDoubleClick = false;
 		setTimeout(() => {
 			if (!this.isDoubleClick) {
-				this.isDragged ? (this.isDragged = !this.isDragged) : console.log(node);
+				this.parentNode = {};
+				this.getParent(this.tree[0], node.name);
+				if (this.isDragged) this.isDragged = !this.isDragged;
+				else if (this.isSelected == false) {
+					this.origTree = JSON.parse(JSON.stringify(this.tree)); // to make sure variable is not referenced
+					node.nodes.forEach((element) => (element.nodes = []));
+					this.parentNode.nodes = Array(node);
+					this.tree = Array(this.parentNode);
+					this.isSelected = true;
+				}
 			}
 		}, 300);
 	}
@@ -48,16 +69,24 @@ export class MindmapComponent {
 	}
 
 	/** function to delete all the children nodes */
+
 	deleteNode(data) {
-		data.nodes = [];
+		const element = document.getElementById(data.name);
+		element.style.transform = 'rotate3d(2, -1, -1, 10turn)';
+		setTimeout(() => element.style.transform = '', 500);
+		setTimeout(() => (data.nodes = []), 500);
 		return false;
 	}
 
 	/** stores the parent node of the specified node in parentNode */
+
 	getParent(obj, name) {
-		if (obj.name == name) {
-			console.log('TRUE');
+		if (obj.name == name && name !== 'root') {
 			return true;
+		}
+		if (name == 'root') {
+			this.parentNode = this.tree[0];
+			return;
 		}
 		for (let node of obj.nodes) {
 			if (this.getParent(node, name)) {
@@ -65,5 +94,12 @@ export class MindmapComponent {
 				break;
 			}
 		}
+	}
+
+	/** function to close the mindmap of particular node */
+
+	@HostListener('document:keydown.escape', ['event']) escapePressed(e: Event) {
+		this.isSelected = false;
+		this.tree = this.origTree;
 	}
 }
