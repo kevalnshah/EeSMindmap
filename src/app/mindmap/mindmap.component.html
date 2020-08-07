@@ -1,11 +1,13 @@
-<ng-container *ngTemplateOutlet="nod; context: { list: tree }"></ng-container>
+<div cdkDrag (cdkDragStarted)="isDragged = true">
+	<ng-container *ngTemplateOutlet="nod; context: { list: tree }"></ng-container>
+</div>
 
 <ng-template #nod let-list="list">
 	<div *ngFor="let node of list" cdkDrag (cdkDragStarted)="isDragged = true">
 		<div class="pos">
 			<svg
 				[id]="node.name"
-				class="node"
+				class="nodeClass"
 				height="100"
 				width="100"
 				(click)="mindmap(node)"
@@ -23,6 +25,7 @@
 					{{ node.name }}
 				</text>
 			</svg>
+				<!-- <div [ngStyle]='line(node)'>keval</div> -->
 		</div>
 		<div class="child">
 			<ng-container
@@ -33,12 +36,13 @@
 </ng-template>
 
 <div class="legend">
+	<h1>LEGEND:</h1>
 	<p>Single Click: SEE MINDMAP OF SELECTED NODE</p>
 	<p>Double Click: ADD NEW CHILD NODE</p>
 	<p>Right Click: DELETE ALL CHILDREN OF SELECTED NODE</p>
 	<p>Escape: VIEW ORIGINAL TREE</p>
 	<p>Click 'root': TOGGLE JSON OBJECT</p>
 </div>
-<div class="json" [style.display]='showJSON'>
+<div class="json" [style.display]="showJSON">
 	{{ tree | json }}
 </div>
